@@ -22,10 +22,10 @@ fun PostItem(post: Post) {
         elevation = 4.dp
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = post.title, style = MaterialTheme.typography.h6)
+            Text(text = post.Title, style = MaterialTheme.typography.h6)
             Spacer(modifier = Modifier.height(8.dp))
             AsyncImage(
-                model = post.image_url,
+                model = post.Image_url,
                 contentDescription = "Post image",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -33,9 +33,9 @@ fun PostItem(post: Post) {
                 contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = post.description, style = MaterialTheme.typography.body1)
+            Text(text = post.Description, style = MaterialTheme.typography.body1)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Posted at: ${post.posted_at}", style = MaterialTheme.typography.caption)
+            Text(text = "Posted at: ${post.Posted_at}", style = MaterialTheme.typography.caption)
         }
     }
 }
