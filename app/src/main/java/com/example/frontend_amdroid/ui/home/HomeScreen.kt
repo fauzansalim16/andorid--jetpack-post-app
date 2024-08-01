@@ -18,6 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
+    // Observe(monitor) the LiveData and save it to posts with "by" which is delegation property
     val posts by viewModel.posts.observeAsState(initial = emptyList())
     val isLoading by viewModel.isLoading.observeAsState(initial = true)
     val error by viewModel.error.observeAsState()

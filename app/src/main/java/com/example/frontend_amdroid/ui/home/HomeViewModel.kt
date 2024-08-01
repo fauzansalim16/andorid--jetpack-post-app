@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
     private val repository = PostRepository()
+    // LiveData to Lifecycle-aware(monitor) data posts
     private val _posts = MutableLiveData<List<Post>>()
     val posts: LiveData<List<Post>> = _posts
 

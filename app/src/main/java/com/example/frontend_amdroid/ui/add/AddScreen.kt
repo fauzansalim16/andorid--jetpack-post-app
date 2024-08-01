@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
+// viewModel() works like dependency injection, in this func viewModel() will use instance of AddViewModel
 fun AddScreen(viewModel: AddViewModel = viewModel()) {
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }

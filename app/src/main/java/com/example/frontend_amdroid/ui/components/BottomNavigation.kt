@@ -11,7 +11,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 
-//sealed class digunakan untuk membatasi hiararki dari class yang ada
+//sealed class used to limit hierarchy of the class
 sealed class BottomNavItem(val route: String, val icon: ImageVector, val title: String) {
     data object Home : BottomNavItem("home", Icons.Default.Home, "Home")
     data object Add : BottomNavItem("add", Icons.Default.Add, "Add")
