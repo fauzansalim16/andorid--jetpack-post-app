@@ -30,7 +30,9 @@ class HomeViewModel : ViewModel() {
             _isLoading.value = true
             try {
                 val fetchedPosts = repository.getPosts()
-                _posts.value = fetchedPosts
+                _posts.value = fetchedPosts.map { post ->
+                    post.copy(Image_url = "http://10.0.2.2:8080/${post.Image_url}")
+                }
                 _error.value = null
             } catch (e: Exception) {
                 _error.value = "Error fetching posts: ${e.message}"
