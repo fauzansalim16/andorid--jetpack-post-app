@@ -16,36 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-
-//@Composable
-//fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
-//    val posts by viewModel.posts.observeAsState(initial = emptyList())
-//
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(16.dp)
-//    ) {
-//        Text(
-//            text = "Home Screen",
-//            style = MaterialTheme.typography.h4,
-//            modifier = Modifier.padding(bottom = 16.dp)
-//        )
-//
-//        if (posts.isEmpty()) {
-//            CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-//        } else {
-//            LazyColumn(
-//                verticalArrangement = Arrangement.spacedBy(16.dp)
-//            ) {
-//                items(posts) { post ->
-//                    PostItem(post)
-//                }
-//            }
-//        }
-//    }
-//}
-
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
     val posts by viewModel.posts.observeAsState(initial = emptyList())
