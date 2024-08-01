@@ -7,12 +7,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 
 @Composable
-// viewModel() works like dependency injection, in this func viewModel() will use instance of AddViewModel
 fun AddScreen(viewModel: AddViewModel = viewModel()) {
+    // remember fun is to keep variable value
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
+    val selectedImageUri by viewModel.selectedImageUri.collectAsState()
+    val context = LocalContext.current
+
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri: Uri? ->
+            viewModel.setSelectedImage(uri)
+        }
+    )
 
     Column(
         modifier = Modifier
@@ -38,16 +54,26 @@ fun AddScreen(viewModel: AddViewModel = viewModel()) {
         )
 
         Button(
-            onClick = { /* TODO: Implement image picker */ },
+            onClick = { imagePicker.launch("image/*") },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
             Text("Add Image")
         }
 
+        selectedImageUri?.let { uri ->
+            Image(
+                painter = rememberAsyncImagePainter(uri),
+                contentDescription = "Selected image",
+                modifier = Modifier
+                    .size(200.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
+        }
+
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
-            onClick = { viewModel.createPost(title, description) },
+            onClick = { viewModel.createPost(context, title, description) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Create Post")
