@@ -8,9 +8,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
@@ -21,6 +23,7 @@ fun AddScreen(viewModel: AddViewModel = viewModel()) {
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     val selectedImageUri by viewModel.selectedImageUri.collectAsState()
+    val postCreationStatus by viewModel.postCreationStatus.collectAsState()
     val context = LocalContext.current
 
     val imagePicker = rememberLauncherForActivityResult(
@@ -29,6 +32,24 @@ fun AddScreen(viewModel: AddViewModel = viewModel()) {
             viewModel.setSelectedImage(uri)
         }
     )
+
+    LaunchedEffect(postCreationStatus) {
+        when (postCreationStatus) {
+            is PostCreationStatus.Success -> {
+                Toast.makeText(context, "Post created successfully!", Toast.LENGTH_SHORT).show()
+                // Reset form fields
+                title = ""
+                description = ""
+                viewModel.setSelectedImage(null)
+                viewModel.resetPostCreationStatus()
+            }
+            is PostCreationStatus.Error -> {
+                Toast.makeText(context, (postCreationStatus as PostCreationStatus.Error).message, Toast.LENGTH_LONG).show()
+                viewModel.resetPostCreationStatus()
+            }
+            else -> {}
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -74,9 +95,14 @@ fun AddScreen(viewModel: AddViewModel = viewModel()) {
 
         Button(
             onClick = { viewModel.createPost(context, title, description) },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            enabled = postCreationStatus !is PostCreationStatus.Loading
         ) {
-            Text("Create Post")
+            if (postCreationStatus is PostCreationStatus.Loading) {
+                CircularProgressIndicator(color = Color.White)
+            } else {
+                Text("Create Post")
+            }
         }
     }
 }
